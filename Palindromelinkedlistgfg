@@ -1,0 +1,50 @@
+
+class Solution {
+  public:
+ 
+    Node* reverseList(Node* head) {
+        Node* prev = NULL;
+        Node* curr = head;
+        
+        while (curr != NULL) {
+            Node* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+  public:
+    bool isPalindrome(Node *head) {
+        if (head == NULL || head->next == NULL) {
+            return true;
+        }
+        Node* slow = head;
+        Node* fast = head;
+        while (fast->next != NULL && fast->next->next != NULL) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+     
+        Node* secondHalfHead = reverseList(slow->next);
+        
+
+        Node* firstHalf = head;
+        Node* secondHalfCopy = secondHalfHead; 
+        bool isPalin = true;
+        
+        while (secondHalfCopy != NULL) {
+            if (firstHalf->data != secondHalfCopy->data) {
+                isPalin = false;
+                break;
+            }
+            firstHalf = firstHalf->next;
+            secondHalfCopy = secondHalfCopy->next;
+        }
+        slow->next = reverseList(secondHalfHead);
+
+        return isPalin;
+    }
+};
